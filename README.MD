@@ -13,7 +13,10 @@
 Copy, Paste, and Save
 <br/>
 WALLET_ADDRESSES=wallet1,wallet2,wallet3,etc<br/>
-AGENT_ID=R89FtdnXa7jWWHyr97WQ9LKG # Current deployment_id
+AGENT_ID=R89FtdnXa7jWWHyr97WQ9LKG
+<br/>
+Find AGENT_ID
+<a href="https://ibb.co.com/3V5qgq6"><img src="https://i.ibb.co.com/3V5qgq6/Screenshot-2025-03-02-224209.png" alt="Screenshot-2025-03-02-224209" border="0"></a>
 
 ## How to use▶️
 ```bash
