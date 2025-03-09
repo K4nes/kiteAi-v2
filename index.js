@@ -118,8 +118,16 @@ async function processMessage(walletAddress, message, progress) {
     }
 }
 
+// Function to format time (hours, minutes, seconds)
+function formatTime(ms) {
+    const hours = Math.floor(ms / (1000 * 60 * 60));
+    const minutes = Math.floor((ms % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((ms % (1000 * 60)) / 1000);
+    return `${hours}h ${minutes}m ${seconds}s`;
+}
+
 // Main function
-async function main() {
+async function runScript() {
     const progress = createProgressTracker(WALLET_ADDRESSES);
 
     // Render initial progress
@@ -139,6 +147,32 @@ async function main() {
 
     // Final render to ensure all updates are displayed
     logUpdate.done(); // Stop dynamic updates
+
+    // Schedule the script to restart after 24 hours
+    console.log(chalk.yellow('Script completed. Restarting in 24 hours...'));
+
+    // Start the 24-hour countdown
+    const restartTime = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
+    let remainingTime = restartTime;
+
+    const countdownInterval = setInterval(() => {
+        remainingTime -= 1000; // Decrease by 1 second
+        logUpdate(chalk.yellow(`Time until restart: ${formatTime(remainingTime)}`)); // Dynamically update the countdown
+
+        if (remainingTime <= 0) {
+            clearInterval(countdownInterval); // Stop the countdown
+            logUpdate.done(); // Stop dynamic updates
+            console.log(chalk.yellow('Restarting script now...'));
+            runScript(); // Restart the script
+        }
+    }, 1000); // Update every second
 }
 
-main();
+// Start the script
+runScript();
+
+// Handle process termination (e.g., Ctrl+C)
+process.on('SIGINT', () => {
+    console.log(chalk.yellow('\nScript terminated by user. Exiting...'));
+    process.exit(0);
+});
